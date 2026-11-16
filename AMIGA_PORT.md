@@ -17,7 +17,8 @@ What you need
 -------------
 
 - GFOS: AmigaOS 3.2 with GFOpenUp 0.8.26 or later, which installs
-  LIBS:GFOpenGPU/SDL2.module and SDL2_ttf.module.
+  LIBS:GFOpenGPU/SDL2.module. SDL2_ttf is linked into the game from
+  GFOpenUp's kit, so no SDL2_ttf.module is needed.
 - A 68040 or 68060 with an FPU (not an LC040 or EC040), an RTG screen of
   800 x 600 or more (or the AmiCradle lab), and about 8 MB of free memory.
 - Nothing else: the levels, pictures, sounds and fonts are in the drawer's

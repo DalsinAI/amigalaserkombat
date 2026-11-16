@@ -7,8 +7,7 @@
   "fpu": true,
   "space": 9000000,
   "modules": [
-    "SDL2.module",
-    "SDL2_ttf.module"
+    "SDL2.module"
   ],
   "keep": [],
   "parent": "Work:Games",

@@ -53,8 +53,6 @@
 ; (older instances have only that); none is copied before all are found
 (if (and (<> (exists "LIBS:GFOpenGPU/SDL2.module" (noreq)) 1) (<> (exists "LIBS:OpenGPU/SDL2.module" (noreq)) 1))
     (abort "Laser Kombat needs GFOpenGPU's SDL2.module, which is in neither LIBS:GFOpenGPU/ nor LIBS:OpenGPU/. Install GFOpenGPU (SDL2) first, then run Install-LaserKombat again. Nothing has been installed."))
-(if (and (<> (exists "LIBS:GFOpenGPU/SDL2_ttf.module" (noreq)) 1) (<> (exists "LIBS:OpenGPU/SDL2_ttf.module" (noreq)) 1))
-    (abort "Laser Kombat needs GFOpenGPU's SDL2_ttf.module, which is in neither LIBS:GFOpenGPU/ nor LIBS:OpenGPU/. Install GFOpenGPU (SDL2) first, then run Install-LaserKombat again. Nothing has been installed."))
 (if (<> (exists "LIBS:GFOpenGPU" (noreq)) 2)
     (makedir "LIBS:GFOpenGPU"))
 (if (<> (exists "LIBS:GFOpenGPU/SDL2.module" (noreq)) 1)
@@ -64,13 +62,6 @@
         (source "LIBS:OpenGPU")
         (dest "LIBS:GFOpenGPU")
         (choices "SDL2.module")))
-(if (<> (exists "LIBS:GFOpenGPU/SDL2_ttf.module" (noreq)) 1)
-    (copyfiles
-        (prompt "Copying SDL2_ttf.module from LIBS:OpenGPU/ to LIBS:GFOpenGPU/")
-        (help @copyfiles-help)
-        (source "LIBS:OpenGPU")
-        (dest "LIBS:GFOpenGPU")
-        (choices "SDL2_ttf.module")))
 (complete 20)
 
 ; the drawer: everything in it, but what the player has made
