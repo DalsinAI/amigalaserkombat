@@ -1,0 +1,9 @@
+build/
+.vscode/
+bin/
+*.exe
+*.iso
+*.obj
+*.cpp.d
+*.pdb
+.DS_Store
