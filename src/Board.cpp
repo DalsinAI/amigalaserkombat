@@ -119,6 +119,11 @@ bool Board::LoadLevel() {
 		info = true;
 		int size= fread( &origin_x, sizeof(origin_y), 1, file);
 		if (size) size= fread( &origin_y, sizeof(origin_x), 1, file);
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+		/* the level files hold little-endian ints (they were written on a PC) */
+		origin_x = (int)SDL_SwapLE32((Uint32)origin_x);
+		origin_y = (int)SDL_SwapLE32((Uint32)origin_y);
+#endif
 		origin_x%=COLUMNS;
 		origin_y%=ROWS;
 
@@ -136,6 +141,16 @@ bool Board::LoadLevel() {
 		}
 		
 		fclose(file);
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+		for (int x = 0; x < COLUMNS; x++) {
+			for (int y = 0; y < ROWS; y++) {
+				groundTypeArray[x][y] = (BlockType)SDL_SwapLE32((Uint32)groundTypeArray[x][y]);
+				blockTypeArray[x][y] = (BlockType)SDL_SwapLE32((Uint32)blockTypeArray[x][y]);
+				groundRotationArray[x][y] = (int)SDL_SwapLE32((Uint32)groundRotationArray[x][y]);
+				blockRotationArray[x][y] = (int)SDL_SwapLE32((Uint32)blockRotationArray[x][y]);
+			}
+		}
+#endif
 		FillArray(false);
 		return (size==COLUMNS*ROWS);
 

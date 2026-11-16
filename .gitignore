@@ -7,3 +7,5 @@ bin/
 *.cpp.d
 *.pdb
 .DS_Store
+build/
+build-amiga-package/
