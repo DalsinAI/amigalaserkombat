@@ -27,7 +27,8 @@ INC     = -Iinclude -I$(SDL2KIT)/include/SDL2
 CFLAGS  = -noixemul $(OPT) $(CPU)
 CXXFLAGS = $(CFLAGS) -std=gnu++17 -fpermissive -Wall $(INC)
 LDFLAGS = -noixemul $(CPU)
-LIBS    = -L$(SDL2KIT)/lib -lSDL2_ttf -lSDL2 -lm
+# libstdc++'s exception support takes its locks from the stove's pthread.
+LIBS    = -L$(SDL2KIT)/lib -lSDL2_ttf -lSDL2 -lpthread -latomic -lm
 
 BUILD   = build/amigaos
 OBJDIR  = $(BUILD)/obj
