@@ -110,10 +110,17 @@ Input Window::getInputForKeyboardKey(SDL_Keycode key) {
             break;
 
         case SDLK_PAGEUP:
+#ifdef __amigaos__
+        /* An Amiga keyboard has no Page Up / Page Down: P and N too. */
+        case SDLK_p:
+#endif
             input = Input::PREVIOUSLEVEL;
             break;
 
         case SDLK_PAGEDOWN:
+#ifdef __amigaos__
+        case SDLK_n:
+#endif
             input = Input::NEXTLEVEL;
             break;
 

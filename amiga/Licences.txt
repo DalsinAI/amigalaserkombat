@@ -1,0 +1,17 @@
+Laser Kombat: licences
+======================
+
+The game: Laser Kombat (1995) by David Dewey, who shared its code under the
+GPL; the SDL 2 and C++17 version by Wouter Wijsman,
+https://github.com/sharkwouter/laserkombat.
+
+- The program, its levels, pictures and sounds (src/, include/, assets/)
+  are under the GNU General Public License, version 3 (COPYING.txt).
+- The fonts (assets/fonts: FreeSans, FreeSerif, FreeSerif Italic) are GNU
+  FreeFont, under the GNU General Public License version 3 or later with
+  the font exception; their authors are in assets/fonts/AUTHORS.
+- The Amiga port's own files (amiga/, AMIGA_PORT.md, package/, tools/,
+  tests/) are GPL 3, like the game; the GlowIcon art is The AmiCradle
+  Team's own.
+
+The game's data are upstream's own, unchanged.

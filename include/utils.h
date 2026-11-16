@@ -13,8 +13,11 @@ static std::string getAssetPath(std::string type, std::string file) {
         std::string separator = "/";
     #endif
 
-    #ifdef NXDK
+    #if defined(NXDK)
         path += "D:\\";
+    #elif defined(__amigaos__)
+        /* the program's own drawer, wherever it was started from */
+        path += "PROGDIR:";
     #else
     char * base_path = SDL_GetBasePath();
     if (base_path) {

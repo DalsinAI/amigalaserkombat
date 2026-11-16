@@ -1,0 +1,20 @@
+Laser Kombat: the keys
+======================
+
+  Cursor keys     move the tank, or turn it
+  Space           fire the laser
+  U               undo the last move
+  S               keep this moment       R   go back to it
+  Return          start the level again
+  P / N           the level before / the next level (Page Up / Page Down
+                  on a PC keyboard)
+  F1              the keys              F2   what each block does
+  Esc             quit
+
+Destroy every enemy tank. Stay out of their line of sight: shoot lasers
+at the mirrors, blow up the bombs, or push the enemies into the water.
+
+The keys every AmiCradle game has on Right Amiga (GFOpenUp's SDL2.module):
+Right Amiga + F window or full screen, + P pause, + Q quit, + M free the
+mouse pointer, + S a screenshot in the drawer's Screenshots, and Help
+shows this file.

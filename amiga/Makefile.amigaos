@@ -1,0 +1,76 @@
+# Laser Kombat for GFOS (AmigaOS 3.2 with GFOpenUp), 68040/68060 + FPU, on
+# GFOpenUp's SDL 2 (LIBS:GFOpenGPU/SDL2.module; SDL2_ttf from the kit is
+# linked in).
+#
+#   make -f amiga/Makefile.amigaos -j4 [STOVE=/path/to/os32-gcc16-open6]
+#
+# STOVE is a GFOpenAmigaGCC 16.2.0-open6 stove: its prefix/ has the
+# compilers, the NDK and GFOpenGPU's SDL 2 kit (prefix/m68k-amigaos). The
+# pictures, sounds, fonts and levels are upstream's assets/, read from
+# PROGDIR:assets/ (include/utils.h).
+#
+# Output: build/amigaos/LaserKombat/ (the drawer: LaserKombat, assets/,
+# ReadMe, Controls, upstream's README, the licences, with GlowIcons),
+# build/amigaos/LaserKombat.info and Install-LaserKombat beside them.
+
+STOVE   ?= $(HOME)/AmiCradle/stoves/os32-gcc16-open6
+PREFIX  ?= $(STOVE)/prefix
+SDL2KIT ?= $(PREFIX)/m68k-amigaos
+CC      = $(PREFIX)/bin/m68k-amigaos-gcc
+CXX     = $(PREFIX)/bin/m68k-amigaos-g++
+CPU     ?= -m68040 -m68881
+# -fno-tree-loop-distribute-patterns: GCC 16's loop miscompile (the kit's
+# sdl2-config gives it for GCC 16 too).
+OPT     ?= -O2 -fomit-frame-pointer -fno-tree-loop-distribute-patterns
+
+# As upstream's CMakeLists.txt (C++17, -fpermissive).
+INC     = -Iinclude -I$(SDL2KIT)/include/SDL2
+CFLAGS  = -noixemul $(OPT) $(CPU)
+CXXFLAGS = $(CFLAGS) -std=gnu++17 -fpermissive -Wall $(INC)
+LDFLAGS = -noixemul $(CPU)
+# libstdc++'s exception support takes its locks from the stove's pthread.
+LIBS    = -L$(SDL2KIT)/lib -lSDL2_ttf -lSDL2 -lpthread -latomic -lm
+
+BUILD   = build/amigaos
+OBJDIR  = $(BUILD)/obj
+OUT     = $(BUILD)/LaserKombat
+PROG    = LaserKombat
+
+SRC     = $(wildcard src/*.cpp)
+OBJS    = $(SRC:%.cpp=$(OBJDIR)/%.o) $(OBJDIR)/amiga/amiga_start.o
+
+all: $(OUT)/$(PROG) package
+
+$(OUT)/$(PROG): $(OBJS)
+	@mkdir -p $(OUT)
+	$(CXX) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
+
+package: $(OUT)/$(PROG) AMIGA_PORT.md README.md COPYING amiga/Licences.txt amiga/Controls
+	rm -rf $(OUT)/assets
+	mkdir -p $(OUT)/assets
+	cp -R assets/fonts assets/images assets/levels assets/sounds $(OUT)/assets/
+	cp AMIGA_PORT.md $(OUT)/ReadMe
+	cp amiga/Controls $(OUT)/Controls
+	cp README.md $(OUT)/ReadMe-LaserKombat
+	cp COPYING $(OUT)/COPYING.txt
+	cp amiga/Licences.txt $(OUT)/Licences.txt
+	cp amiga/icons/LaserKombat.info amiga/icons/ReadMe.info $(OUT)/
+	for f in ReadMe-LaserKombat COPYING.txt Licences.txt Controls; do \
+	    cp amiga/icons/ReadMe.info $(OUT)/$$f.info; done
+	cp amiga/icons/LaserKombat-drawer.info $(BUILD)/LaserKombat.info
+	cp amiga/Install-LaserKombat amiga/Install-LaserKombat.info $(BUILD)/
+
+$(OBJDIR)/src/%.o: src/%.cpp $(wildcard include/*.h)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OBJDIR)/amiga/%.o: amiga/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -Wall -c -o $@ $<
+
+objs: $(OBJS)
+
+clean:
+	rm -rf $(BUILD)
+
+.PHONY: all package objs clean

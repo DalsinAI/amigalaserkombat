@@ -1,0 +1,16 @@
+{
+  "name": "Laser Kombat",
+  "version": "1.0-gfos1",
+  "drawer": "LaserKombat",
+  "program": "LaserKombat",
+  "cpu": "68040",
+  "fpu": true,
+  "space": 9000000,
+  "modules": [
+    "SDL2.module"
+  ],
+  "keep": [],
+  "parent": "Work:Games",
+  "badge": "icons/art/laserkombat.png",
+  "script": "Install-LaserKombat"
+}
