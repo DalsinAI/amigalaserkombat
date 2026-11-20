@@ -6,7 +6,7 @@ on:
 jobs:
   Linux:
     # local runner, inside a container so apt stays off the host
-    runs-on: [self-hosted, Linux, X64, amigagfosports]
+    runs-on: [self-hosted, lumavault]
     container: ubuntu:24.04
     steps:
       - name: Install dependencies
@@ -71,7 +71,7 @@ jobs:
             laserkombat/third-party-licenses
 
   PSP:
-    runs-on: [self-hosted, Linux, X64, amigagfosports]
+    runs-on: [self-hosted, lumavault]
     container: pspdev/pspdev:latest
     steps:
       - name: Checkout
@@ -96,7 +96,7 @@ jobs:
   Release:
     needs: [Linux, Windows, PSP]
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: [self-hosted, Linux, X64, amigagfosports]
+    runs-on: [self-hosted, lumavault]
     container: ubuntu:24.04
     strategy:
       matrix:
