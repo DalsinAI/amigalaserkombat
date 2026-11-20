@@ -5,14 +5,14 @@ on:
 
 jobs:
   Linux:
-    # local runner, inside a container so apt stays off the host
+    # org runner (bigguy, one fresh container per job)
     runs-on: [self-hosted, lumavault]
-    container: ubuntu:24.04
     steps:
       - name: Install dependencies
         run: |
-          apt-get update
-          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends build-essential git ca-certificates cmake libsdl2-dev libsdl2-ttf-dev
+          S=$([ "$(id -u)" = 0 ] || echo sudo)
+          $S apt-get update
+          $S env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends build-essential git ca-certificates cmake libsdl2-dev libsdl2-ttf-dev
       - name: Checkout
         uses: actions/checkout@v7
       - name: Build
@@ -71,7 +71,8 @@ jobs:
             laserkombat/third-party-licenses
 
   PSP:
-    runs-on: [self-hosted, lumavault]
+    # needs a docker image, and the org runners have no docker
+    runs-on: ubuntu-latest
     container: pspdev/pspdev:latest
     steps:
       - name: Checkout
@@ -97,13 +98,14 @@ jobs:
     needs: [Linux, Windows, PSP]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: [self-hosted, lumavault]
-    container: ubuntu:24.04
     strategy:
       matrix:
         build: [linux, windows, psp]
     steps:
     - name: Container tools
-      run: apt-get update && apt-get install -y --no-install-recommends zip ca-certificates
+      run: |
+        S=$([ "$(id -u)" = 0 ] || echo sudo)
+        $S apt-get update && $S apt-get install -y --no-install-recommends zip ca-certificates
     - uses: actions/download-artifact@v8
     - name: Zip artifacts
       run: |
